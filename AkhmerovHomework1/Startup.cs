@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AkhmerovHomework1.Infrastructure.InMemory;
+﻿using AkhmerovHomework1.Infrastructure.InMemory;
 using AkhmerovHomework1.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +24,7 @@ namespace AkhmerovHomework1
             services.AddMvc();
 
             services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+            services.AddSingleton<IProductData, InMemoryProductData>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
