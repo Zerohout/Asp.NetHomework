@@ -18,12 +18,7 @@ namespace AkhmerovHomework.Controllers
         {
             return View();
         }
-
-        public IActionResult Cart()
-        {
-            return View();
-        }
-
+        
         public IActionResult BlogSingle()
         {
             return View();

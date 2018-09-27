@@ -1,9 +1,10 @@
-﻿using AkhmerovHomework.Infrastructure.Interfaces;
+﻿using AkhmerovHomework.Domain.Model;
+using AkhmerovHomework.Infrastructure.Interfaces;
 using AkhmerovHomework.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebStore.Controllers
+namespace AkhmerovHomeWork.Controllers
 {
     [Route("users")]
     [Authorize]
@@ -33,7 +34,7 @@ namespace WebStore.Controllers
         }
 
         [Route("edit/{id?}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Edit(int? id)
         {
             EmployeeView model;
@@ -54,7 +55,7 @@ namespace WebStore.Controllers
 
         [HttpPost]
         [Route("edit/{id?}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Edit(EmployeeView model)
         {
             if (model.Age < 18 && model.Age > 75)
@@ -90,7 +91,7 @@ namespace WebStore.Controllers
         }
 
         [Route("delete/{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Delete(int id)
         {
             _employeesData.Delete(id);

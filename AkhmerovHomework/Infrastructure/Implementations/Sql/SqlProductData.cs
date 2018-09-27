@@ -1,11 +1,12 @@
 ﻿using AkhmerovHomework.DAL.Context;
-using AkhmerovHomework.Domain.Filters;
 using AkhmerovHomework.Domain.Entities;
+using AkhmerovHomework.Domain.Filters;
 using AkhmerovHomework.Infrastructure.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 
-namespace AkhmerovHomework.Infrastructure.Implementations.Sql
+namespace AkhmerovHomeWork.Infrastructure.Implementations.Sql
 {
     public class SqlProductData : IProductData
     {
@@ -28,14 +29,24 @@ namespace AkhmerovHomework.Infrastructure.Implementations.Sql
 
         public IEnumerable<Product> GetProducts(ProductFilter filter)
         {
-            var query = _context.Products.AsQueryable();
+            var query = _context.Products.Include("Brand").Include("Section").AsQueryable();
+
+            if (filter.Ids != null && filter.Ids.Count > 0)
+            {
+                //query = query.
+            }
 
             if (filter.BrandId.HasValue)
                 query = query.Where(c => c.BrandId.HasValue && c.BrandId.Value.Equals(filter.BrandId.Value));
             if (filter.SectionId.HasValue)
                 query = query.Where(c => c.SectionId.Equals(filter.SectionId.Value));
-
             return query.ToList();
+        }
+
+        public Product GetProductById(int id)
+        {
+            return _context.Products.Include("Brand").Include("Section").FirstOrDefault(p => p.Id.Equals(id));
         }
     }
 }
+
