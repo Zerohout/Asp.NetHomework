@@ -33,7 +33,7 @@ namespace AkhmerovHomeWork.Infrastructure.Implementations.Sql
 
             if (filter.Ids != null && filter.Ids.Count > 0)
             {
-                //query = query.
+                query = query.Where(c => filter.Ids.Contains(c.Id));
             }
 
             if (filter.BrandId.HasValue)
