@@ -1,10 +1,13 @@
-﻿using AkhmerovHomework.Infrastructure.Interfaces;
+﻿using AkhmerovHomework.Domain.Model;
+using AkhmerovHomework.Infrastructure.Interfaces;
 using AkhmerovHomework.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AkhmerovHomework.Controllers
+namespace AkhmerovHomeWork.Controllers
 {
     [Route("users")]
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _employeesData;
@@ -25,15 +28,13 @@ namespace AkhmerovHomework.Controllers
             var employee = _employeesData.GetById(id);
 
             if (ReferenceEquals(employee, null))
-            {
                 return NotFound();
-            }
 
             return View(employee);
-
         }
 
         [Route("edit/{id?}")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Edit(int? id)
         {
             EmployeeView model;
@@ -41,7 +42,9 @@ namespace AkhmerovHomework.Controllers
             {
                 model = _employeesData.GetById(id.Value);
                 if (ReferenceEquals(model, null))
+                {
                     return NotFound();
+                }
             }
             else
             {
@@ -52,6 +55,7 @@ namespace AkhmerovHomework.Controllers
 
         [HttpPost]
         [Route("edit/{id?}")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Edit(EmployeeView model)
         {
             if (model.Age < 18 && model.Age > 75)
@@ -59,31 +63,35 @@ namespace AkhmerovHomework.Controllers
                 ModelState.AddModelError("Age", "Ошибка возраста!");
             }
 
-            if (!ModelState.IsValid) return View(model);
-
-            if (model.Id > 0)
+            if (ModelState.IsValid)
             {
-                var dbItem = _employeesData.GetById(model.Id);
+                if (model.Id > 0)
+                {
+                    var dbItem = _employeesData.GetById(model.Id);
 
-                if (ReferenceEquals(dbItem, null))
-                    return NotFound();
+                    if (ReferenceEquals(dbItem, null))
+                        return NotFound();
 
-                dbItem.FirstName = model.FirstName;
-                dbItem.SurName = model.SurName;
-                dbItem.Age = model.Age;
-                dbItem.Patronymic = model.Patronymic;
-                dbItem.Position = dbItem.Position;
+                    dbItem.FirstName = model.FirstName;
+                    dbItem.SurName = model.SurName;
+                    dbItem.Age = model.Age;
+                    dbItem.Patronymic = model.Patronymic;
+                    dbItem.Position = dbItem.Position;
+                }
+                else
+                {
+                    _employeesData.AddNew(model);
+                }
+                _employeesData.Commit();
+
+                return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                _employeesData.AddNew(model);
-            }
-            _employeesData.Commit();
 
-            return RedirectToAction(nameof(Index));
+            return View(model);
         }
 
         [Route("delete/{id}")]
+        [Authorize(Roles = Constants.Roles.Administrator)]
         public IActionResult Delete(int id)
         {
             _employeesData.Delete(id);
