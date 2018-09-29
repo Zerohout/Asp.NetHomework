@@ -2,10 +2,13 @@
 using AkhmerovHomework.DAL.Context;
 using AkhmerovHomework.Domain.Entities;
 using AkhmerovHomework.Infrastructure.Implementations;
-using AkhmerovHomework.Infrastructure.Implementations.Sql;
 using AkhmerovHomework.Infrastructure.Interfaces;
+using AkhmerovHomeWork.Infrastructure.Implementations;
+using AkhmerovHomeWork.Infrastructure.Implementations.Sql;
+using AkhmerovHomeWork.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -62,6 +65,9 @@ namespace AkhmerovHomework
                     "/Account/AccessDenied"; 
                 options.SlidingExpiration = true;
             });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ICartService, CookieCartService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -29,7 +29,8 @@ namespace AkhmerovHomework.Controllers
                     ImageUrl = p.ImageUrl,
                     Name = p.Name,
                     Order = p.Order,
-                    Price = p.Price
+                    Price = p.Price,
+                    Brand = p.Brand != null ? p.Brand.Name : string.Empty
                 }).OrderBy(p => p.Order).ToList()
             };
 
@@ -38,7 +39,21 @@ namespace AkhmerovHomework.Controllers
 
         public IActionResult ProductDetails(int id)
         {
-            return View();
+            var product = _productData.GetProductById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(new ProductViewModel
+            {
+                Id = product.Id,
+                ImageUrl = product.ImageUrl,
+                Name = product.Name,
+                Order = product.Order,
+                Price = product.Price,
+                Brand = product.Brand != null ? product.Brand.Name : string.Empty
+            });
         }
     }
 }
