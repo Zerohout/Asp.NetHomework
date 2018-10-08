@@ -1,29 +1,31 @@
-﻿@using AkhmerovHomework.Domain.Model
-@model IEnumerable<EmployeeView>
+﻿@model IEnumerable<EmployeeView>
 @{
     ViewData["Title"] = "Список сотрудников";
 }
+
 <hr />
-<a asp-action="Edit" class="btn btn-success">Добавить</a>
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Edit" class="btn btn-success">Добавить</a>
+}
 <hr />
 <table class="table table-bordered">
     @foreach (var item in Model)
     {
         <tr>
-            @if (User.IsInRole(Constants.Roles.Administrator))
-            {
-                <td>
+            <td>
+                @if (User.IsInRole("Administrator"))
+                {
                     <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
-                </td>
-            }
-
+                }
+            </td>
             <td>@item.FirstName</td>
             <td>@item.SurName</td>
             <td>@item.Patronymic</td>
             <td>@item.Age</td>
             <td><a asp-action="Details" asp-route-id="@item.Id">Детали</a></td>
             <td>
-                @if (User.IsInRole(Constants.Roles.Administrator))
+                @if (User.IsInRole("Administrator"))
                 {
                     <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-cut"></i></a>
                 }

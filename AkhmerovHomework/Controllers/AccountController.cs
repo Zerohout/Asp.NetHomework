@@ -10,20 +10,19 @@ namespace AkhmerovHomeWork.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login()
         {
-            return View(new LoginViewModel()
-            {
-                ReturnUrl = returnUrl
-            });
+            return View(new LoginViewModel());
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -47,11 +46,9 @@ namespace AkhmerovHomeWork.Controllers
                 }
 
             }
-
             ModelState.AddModelError("", "Вход невозможен");
             return View(model);
         }
-
 
         [HttpGet]
         public IActionResult Register()
@@ -62,22 +59,20 @@ namespace AkhmerovHomeWork.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var user = new User { UserName = model.UserName};
+            var createResult = await _userManager.CreateAsync(user, model.Password);
+            if (createResult.Succeeded)
             {
-                var user = new User { UserName = model.UserName };
-                var createResult = await _userManager.CreateAsync(user, model.Password);
-                if (createResult.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var identityError in createResult.Errors)
-                    {
-                        ModelState.AddModelError("", identityError.Description);
-                    }
-                }
+                await _signInManager.SignInAsync(user, false);
+                await _userManager.AddToRoleAsync(user, "User");
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var identityError in createResult.Errors)
+            {
+                ModelState.AddModelError("", identityError.Description);
             }
             return View(model);
         }
@@ -87,11 +82,6 @@ namespace AkhmerovHomeWork.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
-
-        public ActionResult AccessDenied()
-        {
-            return View();
         }
 
     }

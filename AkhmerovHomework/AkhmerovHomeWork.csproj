@@ -5,7 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\admin\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\admin\js\bootstrap.min.js" />
+    <None Include="wwwroot\admin\js\custom.js" />
+    <None Include="wwwroot\admin\js\jquery-1.10.2.js" />
   </ItemGroup>
 
   <ItemGroup>

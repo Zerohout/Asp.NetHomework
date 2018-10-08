@@ -1,5 +1,4 @@
-﻿using System;
-using AkhmerovHomework.DAL.Context;
+﻿using AkhmerovHomework.DAL.Context;
 using AkhmerovHomework.Domain.Entities;
 using AkhmerovHomework.Infrastructure.Implementations;
 using AkhmerovHomework.Infrastructure.Interfaces;
@@ -13,8 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace AkhmerovHomework
+namespace WebStore
 {
     public class Startup
     {
@@ -25,22 +25,20 @@ namespace AkhmerovHomework
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
+            services.AddTransient<IProductData, SqlProductData>();
+            services.AddTransient<IOrdersService, SqlOrdersService>();
+
             services.AddDbContext<WebStoreContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-
-            services.AddScoped<IProductData, SqlProductData>();
-
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<WebStoreContext>()
-                .AddDefaultTokenProviders();
+                 .AddEntityFrameworkStores<WebStoreContext>()
+                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -49,29 +47,23 @@ namespace AkhmerovHomework
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
-
-                //options.User.RequireUniqueEmail = true;
             });
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath =
-                    "/Account/Login"; 
-                options.LogoutPath =
-                    "/Account/Logout"; 
-                options.AccessDeniedPath =
-                    "/Account/AccessDenied"; 
+                options.LoginPath = "/Account/Login"; 
+                options.LogoutPath = "/Account/Logout"; 
+                options.AccessDeniedPath = "/Account/AccessDenied"; 
                 options.SlidingExpiration = true;
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.AddTransient<ICartService, CookieCartService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp)
         {
             if (env.IsDevelopment())
             {
@@ -79,11 +71,18 @@ namespace AkhmerovHomework
             }
 
             app.UseStaticFiles();
+
             app.UseWelcomePage("/welcome");
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
