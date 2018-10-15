@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebStore.DomainNew.Models;
-using WebStore.Interfaces;
+using WebStore.DomainNew.ViewModel;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Controllers
 {
@@ -81,22 +81,12 @@ namespace WebStore.Controllers
             {
                 if (model.Id > 0)
                 {
-                    var dbItem = _employeesData.GetById(model.Id);
-
-                    if (ReferenceEquals(dbItem, null))
-                        return NotFound();//возвращаем результат 404 Not Found
-
-                    dbItem.FirstName = model.FirstName;
-                    dbItem.SurName = model.SurName;
-                    dbItem.Age = model.Age;
-                    dbItem.Patronymic = model.Patronymic;
-                    dbItem.Position = dbItem.Position;
+                    _employeesData.UpdateEmployee(model.Id, model);
                 }
                 else
                 {
                     _employeesData.AddNew(model);
                 }
-                _employeesData.Commit();
 
                 return RedirectToAction(nameof(Index));
             }

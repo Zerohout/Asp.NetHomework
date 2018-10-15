@@ -3,13 +3,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Infrastructure\Interfaces\**" />
     <Compile Remove="Models\**" />
-    <Content Remove="Infrastructure\Interfaces\**" />
     <Content Remove="Models\**" />
-    <EmbeddedResource Remove="Infrastructure\Interfaces\**" />
     <EmbeddedResource Remove="Models\**" />
-    <None Remove="Infrastructure\Interfaces\**" />
     <None Remove="Models\**" />
   </ItemGroup>
   <ItemGroup>
@@ -29,5 +25,6 @@
     <ProjectReference Include="..\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\WebStore.DomainNew\WebStore.DomainNew.csproj" />
     <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
+    <ProjectReference Include="..\WebStore.Services\WebStore.Services.csproj" />
   </ItemGroup>
 </Project>

@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebStore.Clients.Services.Values;
+using WebStore.Clients.Services.Employees;
+using WebStore.Clients.Services.Orders;
+using WebStore.Clients.Services.Products;
 using WebStore.DAL.Context;
 using WebStore.DomainNew.Entities;
-using WebStore.Infrastructure.Implementations;
-using WebStore.Infrastructure.Implementations.InMemory;
-using WebStore.Infrastructure.Implementations.Sql;
-using WebStore.Interfaces;
-using WebStore.Interfaces.Api;
+using WebStore.Interfaces.Services;
+using WebStore.Services;
+using WebStore.Services.Sql;
 
 namespace WebStore
 {
@@ -40,10 +40,11 @@ namespace WebStore
             //Добавляем сервисы, необходимые для mvc
             services.AddMvc();
 
+            
             //Добавляем разрешение зависимостей
-            services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            services.AddScoped<IProductData, SqlProductData>();
-            services.AddScoped<IOrdersService, SqlOrdersService>();
+            services.AddTransient<IEmployeesData, EmployeesClient>();
+            services.AddTransient<IProductData, ProductsClient>();
+            services.AddScoped<IOrdersService, OrdersClient>();
 
             //Добавляем EF Core
             services.AddDbContext<WebStoreContext>(options => options.UseSqlServer(
@@ -82,9 +83,6 @@ namespace WebStore
             //Настройки для корзины
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICartService, CookieCartService>();
-
-            // Добавляем реализацию клиента
-            services.AddTransient<IValuesService, ValuesClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

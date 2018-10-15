@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebStore.DomainNew.Models.Order;
-using WebStore.Interfaces;
+using WebStore.DomainNew.ViewModel.Order;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Controllers
 {
