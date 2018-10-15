@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.DomainNew.Dto.Order;
 using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.DomainNew.ViewModel.Order;
 using WebStore.Interfaces.Services;
@@ -51,7 +52,7 @@ namespace WebStore.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult CheckOut(OrderViewModel model)
+        public IActionResult CheckOut(CreateOrderModel model)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +63,7 @@ namespace WebStore.Controllers
             var detailsModel = new DetailsViewModel()
             {
                 CartViewModel = _cartService.TransformCart(),
-                OrderViewModel = model
+                OrderViewModel = model.OrderViewModel
             };
             return View("Details", detailsModel);
         }
