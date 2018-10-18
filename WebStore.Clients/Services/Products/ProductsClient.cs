@@ -21,19 +21,19 @@ namespace WebStore.Clients.Services.Products
         protected sealed override string ServiceAddress { get; set; }
         public List<Section> GetSections()
         {
-            var url = $" {ServiceAddress} /sections";
+            var url = $"{ServiceAddress}/sections";
             var result = Get<List<Section>>(url);
             return result;
         }
         public List<Brand> GetBrands()
         {
-            var url = $" {ServiceAddress} /brands";
+            var url = $"{ServiceAddress}/brands";
             var result = Get<List<Brand>>(url);
             return result;
         }
         public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
         {
-            var url = $" {ServiceAddress} ";
+            var url = $"{ServiceAddress}";
             var response = Post(url, filter);
             var result =
                 response.Content.ReadAsAsync<IEnumerable<ProductDto>>().Result;
@@ -41,7 +41,7 @@ namespace WebStore.Clients.Services.Products
         }
         public ProductDto GetProductById(int id)
         {
-            var url = $" {ServiceAddress} / {id} ";
+            var url = $"{ServiceAddress}/{id}";
             var result = Get<ProductDto>(url);
             return result;
         }
