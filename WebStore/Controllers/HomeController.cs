@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace WebStore.Controllers
 {
     public class HomeController : Controller
     {
-        
+
         public HomeController()
         {
-            
+
         }
 
         public async Task<IActionResult> Index()
@@ -26,7 +26,7 @@ namespace WebStore.Controllers
             return View();
         }
 
-        
+
         public IActionResult BlogSingle()
         {
             return View();

@@ -3,7 +3,7 @@
     /// <summary>
     /// Entity with order
     /// </summary>
-    public interface IOrderedEntity 
+    public interface IOrderedEntity
     {
         /// <summary>
         /// Порядок

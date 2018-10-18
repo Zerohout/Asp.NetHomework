@@ -7,7 +7,7 @@ namespace WebStore.DomainNew.ViewModel.Account
         [Required]
         public string UserName { get; set; }
 
-        [Required,DataType(DataType.Password)]
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Display(Name = "Remember Me")]

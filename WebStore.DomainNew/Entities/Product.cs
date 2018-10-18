@@ -9,7 +9,7 @@ namespace WebStore.DomainNew.Entities
     /// Сущность продукт
     /// </summary>
     [Table("Products")]
-    public class Product : NamedEntity , IOrderedEntity
+    public class Product : NamedEntity, IOrderedEntity
     {
         public int Order { get; set; }
 

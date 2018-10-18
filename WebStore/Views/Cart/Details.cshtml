@@ -68,7 +68,7 @@
         <h3>Оформите заказ</h3>
     </div>
     <div class="row login-form">
-        @Html.Partial("_OrderPartial", Model.OrderViewModel, 
+        @Html.Partial("_OrderPartial", Model.OrderViewModel,
                 new ViewDataDictionary(ViewData) { { "sumCart", sumCart } })
     </div>
 </section><!--/#do_action-->

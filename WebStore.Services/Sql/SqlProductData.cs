@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.DomainNew.Dto.Product;
 using WebStore.DomainNew.Entities;

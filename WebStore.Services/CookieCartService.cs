@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using WebStore.DomainNew.Filters;
 using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.DomainNew.ViewModel.Product;

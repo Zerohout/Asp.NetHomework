@@ -3,11 +3,10 @@
 @{
     ViewData["Title"] = "Товар:" + Model.Name;
 }
-
 <section>
     <div class="row">
         <div class="col-sm-3">
-            @await Html.PartialAsync("Partial/_LeftSideBar")
+            @
         </div>
         <div class="col-sm-9 padding-right">
             <div class="product-details">
@@ -59,7 +58,7 @@
                         <span>
                             <span>@Model.Price.ToString("C")</span>
                             @*<label>Количество:</label>
-                            <input type="text" value="3" />*@
+                                <input type="text" value="3" />*@
                             <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" asp-route-returnUrl="@Context.Request.Path" class="btn btn-fefault cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 Добавить в корзину
@@ -78,4 +77,3 @@
         </div>
     </div>
 </section>
-

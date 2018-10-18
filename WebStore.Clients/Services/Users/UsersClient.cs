@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Clients.Base;
-using WebStore.DomainNew.Dto.User;
 using WebStore.DomainNew.Entities;
 using WebStore.Interfaces.Api;
 
@@ -90,7 +85,7 @@ namespace WebStore.Clients.Services.Users
         }
 
         #endregion
-        
+
         public void Dispose()
         {
             Client.Dispose();

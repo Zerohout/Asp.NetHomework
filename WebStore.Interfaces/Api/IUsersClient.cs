@@ -11,7 +11,6 @@ namespace WebStore.Interfaces.Api
         IUserPhoneNumberStore<User>,
         IUserLoginStore<User>,
         IUserLockoutStore<User>
-
     {
     }
 }

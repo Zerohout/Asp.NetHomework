@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using WebStore.DomainNew.ViewModel.Order;
 
 namespace WebStore.DomainNew.Dto.Order
