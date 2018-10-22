@@ -8,21 +8,7 @@ namespace WebStore.ServicesHosting.Controllers
     public partial class UsersApiController
     {
         #region IUserRoleStore
-
-        [HttpGet("user/find/{userId}")]
-        public async Task<User> FindByIdAsync(string userId)
-        {
-            var result = await _userStore.FindByIdAsync(userId);
-            return result;
-        }
-
-        [HttpGet("user/normal/{normalizedUserName}")]
-        public async Task<User> FindByNameAsync(string normalizedUserName)
-        {
-            var result = await _userStore.FindByNameAsync(normalizedUserName);
-            return result;
-        }
-
+        
         [HttpPost("role/{roleName}")]
         public async Task AddToRoleAsync([FromBody]User user, string roleName)
         {

@@ -8,37 +8,37 @@ namespace WebStore.ServicesHosting.Controllers
     {
         #region IUserEmailStore
 
-        [HttpPost("setEmail/{email}")]
+        [HttpPost("email/{email}")]
         public async Task SetEmailAsync([FromBody]User user, string email)
         {
             await _userStore.SetEmailAsync(user, email);
         }
 
-        [HttpPost("getEmail")]
+        [HttpPost("email")]
         public async Task<string> GetEmailAsync([FromBody]User user)
         {
             return await _userStore.GetEmailAsync(user);
         }
 
-        [HttpPost("getEmailConfirmed")]
+        [HttpPost("email/confirmed")]
         public async Task<bool> GetEmailConfirmedAsync([FromBody]User user)
         {
             return await _userStore.GetEmailConfirmedAsync(user);
         }
 
-        [HttpPost("setEmailConfirmed/{confirmed}")]
+        [HttpPost("email/confirmed/{confirmed}")]
         public async Task SetEmailConfirmedAsync([FromBody]User user, bool confirmed)
         {
             await _userStore.SetEmailConfirmedAsync(user, confirmed);
         }
 
-        [HttpGet("user/findByEmail/{normalizedEmail}")]
+        [HttpGet("normalEmail/{normalizedEmail}")]
         public async Task<User> FindByEmailAsync(string normalizedEmail)
         {
             return await _userStore.FindByEmailAsync(normalizedEmail);
         }
 
-        [HttpPost("getNormalizedEmail")]
+        [HttpPost("normalEmail")]
         public async Task<string> GetNormalizedEmailAsync([FromBody]User user)
         {
             return await _userStore.GetNormalizedEmailAsync(user);

@@ -15,6 +15,8 @@ namespace WebStore.Services.Sql
         private readonly WebStoreContext _context;
         private readonly UserManager<User> _userManager;
 
+
+
         public SqlOrdersService(WebStoreContext context, UserManager<User>
         userManager)
         {
@@ -59,7 +61,10 @@ namespace WebStore.Services.Sql
         }
         public OrderDto CreateOrder(CreateOrderModel orderModel, string userName)
         {
-            var user = _userManager.FindByNameAsync(userName).Result;
+            User user = null;
+            if (userName != null)
+                user = _userManager.FindByNameAsync(userName).Result;
+
             using (var transaction = _context.Database.BeginTransaction())
             {
                 var order = new Order()
