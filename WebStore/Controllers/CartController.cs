@@ -48,22 +48,32 @@ namespace WebStore.Controllers
         public IActionResult AddToCart(int id, string returnUrl)
         {
             _cartService.AddToCart(id);
-            return Redirect(returnUrl);
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult CheckOut(CreateOrderModel model)
+        public IActionResult CheckOut(OrderViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var orderResult = _ordersService.CreateOrder(model, User.Identity.Name);
+                var orderModel = new CreateOrderModel()
+                {
+                    OrderItems = _cartService.TCart(),
+                    OrderViewModel = model
+                };
+
+                var orderResult = _ordersService.CreateOrder(orderModel, User.Identity.Name);
                 _cartService.RemoveAll();
                 return RedirectToAction("OrderConfirmed", new { id = orderResult.Id });
             }
+
             var detailsModel = new DetailsViewModel()
             {
                 CartViewModel = _cartService.TransformCart(),
-                OrderViewModel = model.OrderViewModel
+                OrderViewModel = model
             };
             return View("Details", detailsModel);
         }
@@ -73,6 +83,5 @@ namespace WebStore.Controllers
             ViewBag.OrderId = id;
             return View();
         }
-
     }
 }

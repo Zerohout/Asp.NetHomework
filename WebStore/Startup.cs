@@ -98,7 +98,9 @@ namespace WebStore
 
             //Настройки для корзины
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<ICartService, CookieCartService>();
+            services.AddTransient<ICartService, CartService>();
+            services.AddTransient<ICartStore, CookiesCartStore>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
