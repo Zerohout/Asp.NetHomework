@@ -1,20 +1,22 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using WebStore.Clients.Services.Employees;
 using WebStore.Clients.Services.Orders;
 using WebStore.Clients.Services.Products;
 using WebStore.Clients.Services.Users;
+using WebStore.Clients.Services.Values;
 using WebStore.DomainNew.Entities;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
-using WebStore.Services;
 using WebStore.Logger;
+using WebStore.Services;
+using WebStore.Services.CustomIdentity;
 using WebStore.Services.Middleware;
 
 namespace WebStore
@@ -35,38 +37,34 @@ namespace WebStore
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             //Добавляем сервисы, необходимые для mvc
             services.AddMvc();
 
-            //Добавляем разрешение зависимости
-            services.AddSingleton<IEmployeesData, EmployeesClient>();
-            //services.AddSingleton<IProductData, InMemoryProductData>();
-
+            //Добавляем реализацию клиента
+            services.AddTransient<IValuesService, ValuesClient>();
+            services.AddTransient<IEmployeesData, EmployeesClient>();
             services.AddTransient<IProductData, ProductsClient>();
             services.AddTransient<IOrdersService, OrdersClient>();
-
             services.AddTransient<IUsersClient, UsersClient>();
 
-            services.AddTransient<IUserStore<User>, UsersClient>();
-            services.AddTransient<IUserRoleStore<User>, UsersClient>();
-            services.AddTransient<IUserClaimStore<User>, UsersClient>();
-            services.AddTransient<IUserPasswordStore<User>, UsersClient>();
-            services.AddTransient<IUserTwoFactorStore<User>, UsersClient>();
-            services.AddTransient<IUserEmailStore<User>, UsersClient>();
-            services.AddTransient<IUserPhoneNumberStore<User>, UsersClient>();
-            services.AddTransient<IUserLoginStore<User>, UsersClient>();
-            services.AddTransient<IUserLockoutStore<User>, UsersClient>();
-
-            services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
-
-            services.AddTransient<ILogger, Log4NetLogger>();
-
+            //Настройка Identity
             services.AddIdentity<User, IdentityRole>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<IUserStore<User>, CustomUserStore>();
+            services.AddTransient<IUserRoleStore<User>, CustomUserStore>();
+            services.AddTransient<IUserClaimStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPasswordStore<User>, CustomUserStore>();
+            services.AddTransient<IUserTwoFactorStore<User>, CustomUserStore>();
+            services.AddTransient<IUserEmailStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPhoneNumberStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLoginStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLockoutStore<User>, CustomUserStore>();
+            services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
+
+
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -87,35 +85,31 @@ namespace WebStore
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath =
-                    "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
-                options.LogoutPath =
-                    "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
-                options.AccessDeniedPath =
-                    "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
+                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
                 options.SlidingExpiration = true;
             });
 
             //Настройки для корзины
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<ICartService, CartService>();
-            services.AddTransient<ICartStore, CookiesCartStore>();
-
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartStore, CookiesCartStore>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp, ILoggerFactory loggerFactory)
         {
-           loggerFactory.AddLog4Net();
+            loggerFactory.AddLog4Net();
 
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
                 app.UseExceptionHandler("/Home/Error");
 
-
             //Добавляем расширение для использования статических файлов, т.к. appsettings.json - это статический файл
             app.UseStaticFiles();
+
+            app.UseWelcomePage("/welcome");
 
             app.UseAuthentication();
 
@@ -126,15 +120,13 @@ namespace WebStore
             //Добавляем обработку запросов в mvc-формате
             app.UseMvc(routes =>
             {
-                //routes.MapRoute("catalog", "catalog", new { controller = "Home", action = "Shop" });
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}");
 
                 routes.MapRoute(
-                name: "areas",
-                template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapRoute(
-                name: "default",
-                template: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
