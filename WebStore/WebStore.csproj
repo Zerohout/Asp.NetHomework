@@ -15,6 +15,9 @@
     <Folder Include="wwwroot\admin\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Views\Shared\Components\BreadCrumbs\Default.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.5.357" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />

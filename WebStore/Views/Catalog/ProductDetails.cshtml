@@ -2,11 +2,12 @@
 @model WebStore.DomainNew.ViewModel.Product.ProductViewModel
 @{
     ViewData["Title"] = "Товар:" + Model.Name;
+    Layout = "_LayoutBreadcrumbs";
 }
 <section>
     <div class="row">
         <div class="col-sm-3">
-            @
+            @await Html.PartialAsync("Partial/_LeftSideBar")
         </div>
         <div class="col-sm-9 padding-right">
             <div class="product-details">
