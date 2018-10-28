@@ -14,6 +14,6 @@ namespace WebStore.DomainNew.ViewModel.Account
         public string Password { get; set; }
 
         [DataType(DataType.Password), Compare(nameof(Password))]
-        public string  ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

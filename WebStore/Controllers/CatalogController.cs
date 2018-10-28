@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using WebStore.DomainNew.Filters;
 using WebStore.DomainNew.ViewModel.Product;
 using WebStore.Interfaces.Services;

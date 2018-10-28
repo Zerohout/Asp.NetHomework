@@ -16,18 +16,27 @@ namespace WebStore.ViewComponents
             _productData = productData;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string sectionId)
         {
-            var sections = GetSections();
-            return View(sections);
+            int.TryParse(sectionId, out var sectionIdInt);
+            var sections = GetSections(sectionIdInt, out var parentSectionId);
+
+            return View(new SectionCompleteViewModel()
+            {
+                Sections = sections,
+                CurrentSectionId = sectionIdInt,
+                CurrentParentSectionId = parentSectionId
+            });
         }
 
         /// <summary>
         /// Получает секции из базы и строит дерево
         /// </summary>
         /// <returns></returns>
-        private List<SectionViewModel> GetSections()
+        private List<SectionViewModel> GetSections(int? sectionId, out int? parentSectionId)
         {
+            parentSectionId = null;
+
             var allSections = _productData.GetSections();
 
             var parentCategories = allSections.Where(p => !p.ParentId.HasValue).ToArray();
@@ -49,6 +58,9 @@ namespace WebStore.ViewComponents
                 var childCategories = allSections.Where(c => c.ParentId.Equals(sectionViewModel.Id));
                 foreach (var childCategory in childCategories)
                 {
+                    if (childCategory.Id == sectionId)
+                        parentSectionId = sectionViewModel.Id;
+
                     sectionViewModel.ChildSections.Add(new SectionViewModel()
                     {
                         Id = childCategory.Id,
@@ -57,6 +69,7 @@ namespace WebStore.ViewComponents
                         ParentSection = sectionViewModel
                     });
                 }
+
                 sectionViewModel.ChildSections = sectionViewModel.ChildSections.OrderBy(c => c.Order).ToList();
             }
 
@@ -64,5 +77,6 @@ namespace WebStore.ViewComponents
 
             return parentSections;
         }
+
     }
 }

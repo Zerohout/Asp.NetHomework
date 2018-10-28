@@ -1,5 +1,4 @@
-﻿using WebStore.DomainNew.Entities.Base;
-using WebStore.DomainNew.Entities.Base.Interfaces;
+﻿using WebStore.DomainNew.Entities.Base.Interfaces;
 
 namespace WebStore.DomainNew.Dto.Product
 {

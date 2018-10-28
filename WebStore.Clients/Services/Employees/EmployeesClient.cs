@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Net.Http;
-using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
 using WebStore.DomainNew.ViewModel;
 using WebStore.Interfaces.Services;

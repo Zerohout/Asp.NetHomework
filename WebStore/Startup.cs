@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using WebStore.Clients.Services.Employees;
 using WebStore.Clients.Services.Orders;
@@ -13,7 +14,10 @@ using WebStore.Clients.Services.Values;
 using WebStore.DomainNew.Entities;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
+using WebStore.Logger;
 using WebStore.Services;
+using WebStore.Services.CustomIdentity;
+using WebStore.Services.Middleware;
 
 namespace WebStore
 {
@@ -33,8 +37,6 @@ namespace WebStore
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             //Добавляем сервисы, необходимые для mvc
@@ -44,23 +46,25 @@ namespace WebStore
             services.AddTransient<IValuesService, ValuesClient>();
             services.AddTransient<IEmployeesData, EmployeesClient>();
             services.AddTransient<IProductData, ProductsClient>();
-            services.AddScoped<IOrdersService, OrdersClient>();
-
+            services.AddTransient<IOrdersService, OrdersClient>();
             services.AddTransient<IUsersClient, UsersClient>();
-            services.AddTransient<IUserStore<User>, UsersClient>();
-            services.AddTransient<IUserRoleStore<User>, UsersClient>();
-            services.AddTransient<IUserClaimStore<User>, UsersClient>();
-            services.AddTransient<IUserPasswordStore<User>, UsersClient>();
-            services.AddTransient<IUserTwoFactorStore<User>, UsersClient>();
-            services.AddTransient<IUserEmailStore<User>, UsersClient>();
-            services.AddTransient<IUserPhoneNumberStore<User>, UsersClient>();
-            services.AddTransient<IUserLoginStore<User>, UsersClient>();
-            services.AddTransient<IUserLockoutStore<User>, UsersClient>();
-            services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
 
             //Настройка Identity
             services.AddIdentity<User, IdentityRole>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<IUserStore<User>, CustomUserStore>();
+            services.AddTransient<IUserRoleStore<User>, CustomUserStore>();
+            services.AddTransient<IUserClaimStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPasswordStore<User>, CustomUserStore>();
+            services.AddTransient<IUserTwoFactorStore<User>, CustomUserStore>();
+            services.AddTransient<IUserEmailStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPhoneNumberStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLoginStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLockoutStore<User>, CustomUserStore>();
+            services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
+
+
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -89,16 +93,18 @@ namespace WebStore
 
             //Настройки для корзины
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartStore, CookiesCartStore>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddLog4Net();
+
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
+            else
+                app.UseExceptionHandler("/Home/Error");
 
             //Добавляем расширение для использования статических файлов, т.к. appsettings.json - это статический файл
             app.UseStaticFiles();
@@ -106,6 +112,10 @@ namespace WebStore
             app.UseWelcomePage("/welcome");
 
             app.UseAuthentication();
+
+            app.UseStatusCodePagesWithRedirects("~/home/errorstatus/{0}");
+
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             //Добавляем обработку запросов в mvc-формате
             app.UseMvc(routes =>

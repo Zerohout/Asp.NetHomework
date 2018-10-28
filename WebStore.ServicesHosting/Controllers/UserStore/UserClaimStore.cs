@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using WebStore.DomainNew.Dto.User;
 using WebStore.DomainNew.Entities;
 
@@ -13,31 +11,31 @@ namespace WebStore.ServicesHosting.Controllers
     {
         #region IUserClaimStore
 
-        [HttpPost("getClaims")]
+        [HttpPost("claims")]
         public async Task<IList<Claim>> GetClaimsAsync([FromBody]User user)
         {
             return await _userStore.GetClaimsAsync(user);
         }
 
-        [HttpPost("addClaims")]
+        [HttpPost("claims/add")]
         public async Task AddClaimsAsync([FromBody]AddClaimsDto claimsDto)
         {
             await _userStore.AddClaimsAsync(claimsDto.User, claimsDto.Claims);
         }
 
-        [HttpPost("replaceClaim")]
+        [HttpPost("claims/replace")]
         public async Task ReplaceClaimAsync([FromBody]ReplaceClaimsDto claimsDto)
         {
             await _userStore.ReplaceClaimAsync(claimsDto.User, claimsDto.Claim, claimsDto.NewClaim);
         }
 
-        [HttpPost("removeClaims")]
+        [HttpPost("claims/remove")]
         public async Task RemoveClaimsAsync([FromBody]RemoveClaimsDto claimsDto)
         {
             await _userStore.RemoveClaimsAsync(claimsDto.User, claimsDto.Claims);
         }
 
-        [HttpPost("getUsersForClaim")]
+        [HttpPost("claims/users")]
         public async Task<IList<User>> GetUsersForClaimAsync([FromBody]Claim claim)
         {
             return await _userStore.GetUsersForClaimAsync(claim);
