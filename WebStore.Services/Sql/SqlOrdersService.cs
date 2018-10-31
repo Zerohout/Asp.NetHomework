@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.DomainNew.Dto.Order;
+using WebStore.DomainNew.Dto.Product;
 using WebStore.DomainNew.Entities;
 using WebStore.Interfaces.Services;
 
@@ -15,14 +16,12 @@ namespace WebStore.Services.Sql
         private readonly WebStoreContext _context;
         private readonly UserManager<User> _userManager;
 
-
-
-        public SqlOrdersService(WebStoreContext context, UserManager<User>
-        userManager)
+        public SqlOrdersService(WebStoreContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
         public IEnumerable<OrderDto> GetUserOrders(string userName)
         {
             return _context.Orders.Include("User").Include("OrderItems").Where(o => o.User.UserName.Equals(userName)).Select(o => new OrderDto()
@@ -40,10 +39,13 @@ namespace WebStore.Services.Sql
                 })
             }).ToList();
         }
+
         public OrderDto GetOrderById(int id)
         {
             var order = _context.Orders.Include("OrderItems").FirstOrDefault(o => o.Id.Equals(id));
+
             if (order == null) return null;
+
             return new OrderDto()
             {
                 Id = order.Id,
@@ -59,10 +61,11 @@ namespace WebStore.Services.Sql
                 })
             };
         }
+
         public OrderDto CreateOrder(CreateOrderModel orderModel, string userName)
         {
             User user = null;
-            if (userName != null)
+            if (!string.IsNullOrEmpty(userName))
                 user = _userManager.FindByNameAsync(userName).Result;
 
             using (var transaction = _context.Database.BeginTransaction())
@@ -75,13 +78,15 @@ namespace WebStore.Services.Sql
                     Phone = orderModel.OrderViewModel.Phone,
                     User = user
                 };
+
                 _context.Orders.Add(order);
+
                 foreach (var item in orderModel.OrderItems)
                 {
-                    var product = _context.Products.FirstOrDefault(p =>
-                    p.Id.Equals(item.Id));
+                    var product = _context.Products.FirstOrDefault(p => p.Id.Equals(item.Id));
                     if (product == null)
                         throw new InvalidOperationException("Продукт не найден в базе");
+
                     var orderItem = new OrderItem()
                     {
                         Order = order,
@@ -91,10 +96,12 @@ namespace WebStore.Services.Sql
                     };
                     _context.OrderItems.Add(orderItem);
                 }
+
                 _context.SaveChanges();
                 transaction.Commit();
                 return GetOrderById(order.Id);
             }
         }
+
     }
 }

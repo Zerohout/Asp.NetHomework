@@ -64,6 +64,7 @@ namespace WebStore.Controllers
             {
                 model = new EmployeeView();
             }
+
             return View(model);
         }
 
@@ -81,6 +82,11 @@ namespace WebStore.Controllers
             {
                 if (model.Id > 0)
                 {
+                    var dbItem = _employeesData.GetById(model.Id);
+
+                    if (ReferenceEquals(dbItem, null))
+                        return NotFound();//возвращаем результат 404 Not Found
+
                     _employeesData.UpdateEmployee(model.Id, model);
                 }
                 else
@@ -88,6 +94,7 @@ namespace WebStore.Controllers
                     _employeesData.AddNew(model);
                 }
 
+                
                 return RedirectToAction(nameof(Index));
             }
             //если не валидна, возвращаем её на представление

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebStore.Controllers;
@@ -17,7 +18,7 @@ namespace WebStore.Tests
     public class CatalogControllerTests
     {
         [TestMethod]
-        public void ProductDetails_Returns_View_With_Correct_Item()
+        public void ProductDetails_Returns_View_With_Correct_Item(IConfiguration configuration)
         {
             // Arrange
             var productMock = new Mock<IProductData>();
@@ -34,7 +35,7 @@ namespace WebStore.Tests
                     Name = "TestBrand"
                 }
             });
-            var controller = new CatalogController(productMock.Object);
+            var controller = new CatalogController(productMock.Object, configuration);
 
             // Act
             var result = controller.ProductDetails(1);
@@ -50,12 +51,12 @@ namespace WebStore.Tests
         }
 
         [TestMethod]
-        public void ProductDetails_Returns_NotFound()
+        public void ProductDetails_Returns_NotFound(IConfiguration configuration)
         {
             // Arrange
             var productMock = new Mock<IProductData>();
             productMock.Setup(p => p.GetProductById(It.IsAny<int>())).Returns((ProductDto)null);
-            var controller = new CatalogController(productMock.Object);
+            var controller = new CatalogController(productMock.Object, configuration);
 
             // Act
             var result = controller.ProductDetails(1);
@@ -65,40 +66,12 @@ namespace WebStore.Tests
         }
 
         [TestMethod]
-        public void Shop_Method_Returns_Correct_View()
+        public void Shop_Method_Returns_Correct_View(IConfiguration configuration)
         {
             // Arrange
             var productMock = new Mock<IProductData>();
-            productMock.Setup(p => p.GetProducts(It.IsAny<ProductFilter>())).Returns(new List<ProductDto>()
-            {
-                new ProductDto()
-                {
-                    Id = 1,
-                    Name = "Test",
-                    ImageUrl = "TestImage.jpg",
-                    Order = 0,
-                    Price = 10,
-                    Brand = new BrandDto()
-                    {
-                        Id = 1,
-                        Name = "TestBrand"
-                    }
-                },
-                new ProductDto()
-                {
-                    Id = 2,
-                    Name = "Test2",
-                    ImageUrl = "TestImage2.jpg",
-                    Order = 1,
-                    Price = 22,
-                    Brand = new BrandDto()
-                    {
-                        Id = 1,
-                        Name = "TestBrand"
-                    }
-                }
-            });
-            var controller = new CatalogController(productMock.Object);
+            
+            var controller = new CatalogController(productMock.Object, configuration);
 
             // Act
             var result = controller.Shop(1, 5);

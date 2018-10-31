@@ -20,13 +20,7 @@ namespace WebStore.ViewComponents
         {
             int.TryParse(sectionId, out var sectionIdInt);
             var sections = GetSections(sectionIdInt, out var parentSectionId);
-
-            return View(new SectionCompleteViewModel()
-            {
-                Sections = sections,
-                CurrentSectionId = sectionIdInt,
-                CurrentParentSectionId = parentSectionId
-            });
+            return View(new SectionCompleteViewModel() { Sections = sections, CurrentSectionId = sectionIdInt, CurrentParentSectionId = parentSectionId });
         }
 
         /// <summary>
@@ -77,6 +71,5 @@ namespace WebStore.ViewComponents
 
             return parentSections;
         }
-
     }
 }

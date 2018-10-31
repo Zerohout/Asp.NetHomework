@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WebStore.DomainNew.Entities;
-using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.Services.CustomIdentity
@@ -266,7 +265,7 @@ namespace WebStore.Services.CustomIdentity
 
         public Task SetLockoutEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
         {
-            return _client.SetLockoutEnabledAsync(user,enabled, cancellationToken);
+            return _client.SetLockoutEnabledAsync(user, enabled, cancellationToken);
         }
     }
 }

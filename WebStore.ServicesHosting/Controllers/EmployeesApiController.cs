@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.DomainNew.ViewModel;
 using WebStore.Interfaces.Services;
-
 
 namespace WebStore.ServicesHosting.Controllers
 {
@@ -14,47 +14,43 @@ namespace WebStore.ServicesHosting.Controllers
 
         public EmployeesApiController(IEmployeesData employeesData)
         {
-            _employeesData = employeesData;
+            _employeesData = employeesData ?? throw new ArgumentNullException(nameof(employeesData));
         }
 
-        /// <inheritdoc />
-        /// GET api/employees
-        [HttpGet]
+        [HttpGet, ActionName("Get")]
         public IEnumerable<EmployeeView> GetAll()
         {
             return _employeesData.GetAll();
         }
 
-        /// <inheritdoc />
-        /// GET api/employees/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), ActionName("Get")]
         public EmployeeView GetById(int id)
         {
             return _employeesData.GetById(id);
         }
 
-        /// <inheritdoc />
-        /// PUT api/employees/{id} 
-        [HttpPut("{id}")]
-        public EmployeeView UpdateEmployee(int id, [FromBody]EmployeeView entity)
-        {
-            return _employeesData.UpdateEmployee(id, entity);
-        }
-
-        /// <inheritdoc />
-        /// POST api/employees
-        [HttpPost]
+        [HttpPost, ActionName("Post")]
         public void AddNew([FromBody]EmployeeView model)
         {
             _employeesData.AddNew(model);
         }
 
-        /// <inheritdoc />
-        /// DELETE api/employees/{id}
+        [HttpPut("{id}"), ActionName("Put")]
+        public EmployeeView UpdateEmployee(int id, [FromBody]EmployeeView entity)
+        {
+            return _employeesData.UpdateEmployee(id, entity);
+        }
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
             _employeesData.Delete(id);
         }
+
+        [NonAction]
+        public void Commit()
+        {
+        }
+
     }
 }

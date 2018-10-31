@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.Interfaces.Services;
 
-namespace WebStore.Services
+namespace WebStore.Services.Cart
 {
     public class CookiesCartStore : ICartStore
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _cartName;
 
-
-        public Cart Cart
+        public DomainNew.ViewModel.Cart.Cart Cart
         {
             get
             {
                 var cookie = _httpContextAccessor.HttpContext.Request.Cookies[_cartName];
-                string json = string.Empty;
-                Cart cart = null;
+                string json;
+                DomainNew.ViewModel.Cart.Cart cart;
 
                 if (cookie == null)
                 {
-                    cart = new Cart { Items = new List<CartItem>() };
+                    cart = new DomainNew.ViewModel.Cart.Cart { Items = new List<CartItem>() };
                     json = JsonConvert.SerializeObject(cart);
 
                     _httpContextAccessor.HttpContext.Response.Cookies.Append(_cartName, json, new CookieOptions()
@@ -35,7 +33,7 @@ namespace WebStore.Services
                 }
 
                 json = cookie;
-                cart = JsonConvert.DeserializeObject<Cart>(json);
+                cart = JsonConvert.DeserializeObject<DomainNew.ViewModel.Cart.Cart>(json);
 
                 _httpContextAccessor.HttpContext.Response.Cookies.Delete(_cartName);
 
@@ -58,7 +56,6 @@ namespace WebStore.Services
                 });
             }
         }
-
 
         public CookiesCartStore(IHttpContextAccessor httpContextAccessor)
         {

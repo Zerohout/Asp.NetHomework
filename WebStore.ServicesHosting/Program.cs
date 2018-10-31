@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Xml;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Threading;
 using WebStore.DAL.Context;
 using WebStore.DomainNew.Entities;
 using WebStore.ServicesHosting.Data;
@@ -15,8 +18,22 @@ namespace WebStore.ServicesHosting
 {
     public class Program
     {
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(typeof(Program));
+
         public static void Main(string[] args)
         {
+            var log4NetConfig = new XmlDocument();
+
+            log4NetConfig.Load(File.OpenRead("log4net.config"));
+
+            var repo = log4net.LogManager.CreateRepository(
+                Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
+
+            log4net.Config.XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
+
+            Log.Info("Test Hosting");
+
             var host = BuildWebHost(args);
             using (var scope = host.Services.CreateScope())
             {
@@ -64,7 +81,6 @@ namespace WebStore.ServicesHosting
                     logger.LogError(ex, "An error occurred while seeding the database.");
                 }
             }
-
             host.Run();
         }
 

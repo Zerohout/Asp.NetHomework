@@ -2,7 +2,6 @@
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
-using WebStore.DomainNew.Dto;
 using WebStore.DomainNew.Dto.Product;
 using WebStore.DomainNew.Entities;
 using WebStore.DomainNew.Filters;
@@ -18,17 +17,17 @@ namespace WebStore.Clients.Services.Products
         }
 
         protected sealed override string ServiceAddress { get; set; }
-        public IEnumerable<SectionDto> GetSections()
+        public IEnumerable<Section> GetSections()
         {
             var url = $"{ServiceAddress}/sections";
-            var result = Get<List<SectionDto>>(url);
+            var result = Get<List<Section>>(url);
             return result;
         }
 
-        public SectionDto GetSectionById(int id)
+        public Section GetSectionById(int id)
         {
             var url = $"{ServiceAddress}/sections/{id}";
-            var result = Get<SectionDto>(url);
+            var result = Get<Section>(url);
             return result;
         }
 
@@ -46,11 +45,11 @@ namespace WebStore.Clients.Services.Products
             return result;
         }
 
-        public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
+        public PagedProductDto GetProducts(ProductFilter filter)
         {
             var url = $"{ServiceAddress}";
             var response = Post(url, filter);
-            var result = response.Content.ReadAsAsync<IEnumerable<ProductDto>>().Result;
+            var result = response.Content.ReadAsAsync<PagedProductDto>().Result;
             return result;
         }
 

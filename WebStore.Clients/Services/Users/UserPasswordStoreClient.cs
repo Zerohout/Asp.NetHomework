@@ -14,12 +14,9 @@ namespace WebStore.Clients.Services.Users
         {
             user.PasswordHash = passwordHash;
             var url = $"{ServiceAddress}/setPasswordHash";
-            await PostAsync(url, new PasswordHashDto()
-            {
-                User = user,
-                Hash = passwordHash
-            });
+            await PostAsync(url, new PasswordHashDto() { User = user, Hash = passwordHash });
         }
+
         public async Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/getPasswordHash";
@@ -27,6 +24,7 @@ namespace WebStore.Clients.Services.Users
             var ret = await result.Content.ReadAsAsync<string>();
             return ret;
         }
+
         public async Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/hasPassword";

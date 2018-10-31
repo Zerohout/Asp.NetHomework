@@ -15,7 +15,7 @@ using WebStore.DomainNew.Entities;
 using WebStore.Interfaces.Api;
 using WebStore.Interfaces.Services;
 using WebStore.Logger;
-using WebStore.Services;
+using WebStore.Services.Cart;
 using WebStore.Services.CustomIdentity;
 using WebStore.Services.Middleware;
 
@@ -47,7 +47,7 @@ namespace WebStore
             services.AddTransient<IEmployeesData, EmployeesClient>();
             services.AddTransient<IProductData, ProductsClient>();
             services.AddTransient<IOrdersService, OrdersClient>();
-            services.AddTransient<IUsersClient, UsersClient>();
+            services.AddTransient<Interfaces.Api.IUsersClient, UsersClient>();
 
             //Настройка Identity
             services.AddIdentity<User, IdentityRole>()
@@ -93,8 +93,8 @@ namespace WebStore
 
             //Настройки для корзины
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICartStore, CookiesCartStore>();
+            services.AddScoped<ICartService, CartService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider svp, ILoggerFactory loggerFactory)

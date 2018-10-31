@@ -1,20 +1,19 @@
-﻿@using WebStore.DomainNew.ViewModel.BreadCrumb
+﻿@using WebStore.DomainNew.ViewModel.BreadCrumbs
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@{
-    // Получаем тип для бренда или секции
+    Layout = "_Layout";
+
+    //Получаем тип для бренда или секции
     var type = Context.Request.Query.ContainsKey("sectionId") ?
         BreadCrumbType.Section : Context.Request.Query.ContainsKey("brandId") ?
             BreadCrumbType.Brand : BreadCrumbType.None;
 
-    // Устанавливаем дефолтное значение источника
+    //Устанавливаем дефолтное значение источника
     var fromType = BreadCrumbType.Section;
 
-    // Если это метод деталей товара
+    //Если это метод деталей товара
     if ((string)ViewContext.RouteData.Values["action"] == "ProductDetails")
     {
-        // Устанавливаем тип товар
+        //устанавливаем тип товар
         type = BreadCrumbType.Item;
     }
 
@@ -31,7 +30,7 @@
             id = int.Parse(Context.Request.Query["brandId"].ToString());
             break;
         case BreadCrumbType.Item:
-            // Если есть ключ того, что пришли с бренда, ставим источник – бренд
+            //если есть ключ того что пришли с бренда ставим источник - бренд
             if (Context.Request.Query.ContainsKey("fromBrand"))
             {
                 fromType = BreadCrumbType.Brand;
@@ -43,9 +42,5 @@
     }
 
 }
-
-
-@(await Component.InvokeAsync("BreadCrumbs", new { type, id, fromType }))
-
+@(await @Component.InvokeAsync("BreadCrumbs", new { type, id, fromType }))
 @RenderBody()
-

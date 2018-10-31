@@ -1,10 +1,9 @@
-﻿using log4net;
-using log4net.Repository;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
+﻿using System;
 using System.Reflection;
 using System.Xml;
+using log4net;
+using log4net.Repository;
+using Microsoft.Extensions.Logging;
 
 namespace WebStore.Logger
 {
@@ -14,21 +13,6 @@ namespace WebStore.Logger
         private readonly XmlElement _xmlElement;
         private readonly ILog _log;
         private ILoggerRepository _loggerRepository;
-
-        public Log4NetLogger()
-        {
-            var log4NetConfig = new XmlDocument();
-
-            log4NetConfig.Load(File.OpenRead("log4net.config"));
-
-            _loggerRepository = log4net.LogManager.CreateRepository(
-                Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
-
-            _log = LogManager.GetLogger(_loggerRepository.Name, "Log4NetLogger");
-
-            log4net.Config.XmlConfigurator.Configure(_loggerRepository, log4NetConfig["log4net"]);
-        }
-
         public Log4NetLogger(string name, XmlElement xmlElement)
         {
             _name = name;
@@ -38,9 +22,35 @@ namespace WebStore.Logger
             _log = LogManager.GetLogger(_loggerRepository.Name, name);
             log4net.Config.XmlConfigurator.Configure(_loggerRepository, xmlElement);
         }
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return null;
+        }
 
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevel.Critical:
+                    return _log.IsFatalEnabled;
+                case LogLevel.Debug:
+                case LogLevel.Trace:
+                    return _log.IsDebugEnabled;
+                case LogLevel.Error:
+                    return _log.IsErrorEnabled;
+                case LogLevel.Information:
+                    return _log.IsInfoEnabled;
+                case LogLevel.Warning:
+                    return _log.IsWarnEnabled;
+                case LogLevel.None:
+                    return false;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(logLevel));
+            }
+        }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state,
+            Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel))
                 return;
@@ -50,8 +60,7 @@ namespace WebStore.Logger
 
             var message = formatter(state, exception);
 
-            if (string.IsNullOrEmpty(message) && exception == null)
-                return;
+            if (string.IsNullOrEmpty(message) && exception == null) return;
 
             switch (logLevel)
             {
@@ -78,35 +87,6 @@ namespace WebStore.Logger
                     _log.Info(message, exception);
                     break;
             }
-
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            switch (logLevel)
-            {
-                case LogLevel.Critical:
-                    return _log.IsFatalEnabled;
-                case LogLevel.Debug:
-                case LogLevel.Trace:
-                    return _log.IsDebugEnabled;
-                case LogLevel.Error:
-                    return _log.IsErrorEnabled;
-                case LogLevel.Information:
-                    return _log.IsInfoEnabled;
-                case LogLevel.Warning:
-                    return _log.IsWarnEnabled;
-                case LogLevel.None:
-                    return false;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
-            }
-
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return null;
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿@using WebStore.DomainNew.ViewModel.Order
-@model WebStore.DomainNew.ViewModel.Order.OrderViewModel
+﻿
+@using WebStore.DomainNew.ViewModel.Order
+@model OrderViewModel
 <form method="post" asp-antiforgery="true" asp-action="CheckOut">
     <div class="col-sm-6">
         <input asp-for="Name" placeholder="@nameof(@Model.Name)" />
@@ -20,7 +21,7 @@
             {
                 var sum = (decimal)sumObj;
                 <ul>
-                    <li>Итого <span>@sum.ToString("C")</span></li>
+                    <li>Итого <span id="totalOrderSum">@sum.ToString("C")</span></li>
                 </ul>
                 if (sum > 0)
                 {

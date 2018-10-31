@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace WebStore.Clients.Base
 {
@@ -95,6 +95,5 @@ namespace WebStore.Clients.Base
             var response = await Client.DeleteAsync(url);
             return response;
         }
-
     }
 }

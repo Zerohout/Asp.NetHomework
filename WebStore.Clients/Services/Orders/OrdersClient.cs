@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
 using WebStore.DomainNew.Dto.Order;
+using WebStore.DomainNew.Dto.Product;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.Clients.Services.Orders

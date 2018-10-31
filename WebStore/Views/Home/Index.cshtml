@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<string>
 @{
     ViewData["Title"] = "E-shopper";
 }
@@ -6,7 +6,10 @@
 
 <section>
     <div class="row">
-
+        @foreach (var item in Model)
+        {
+            <p>@item</p>
+        }
         <div class="col-sm-3">
             @await Html.PartialAsync("Partial/_LeftSideBar")
         </div>

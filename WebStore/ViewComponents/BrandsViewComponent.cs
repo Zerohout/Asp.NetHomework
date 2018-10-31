@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.DomainNew.ViewModel.Product;
 using WebStore.Interfaces.Services;
 
@@ -16,10 +16,11 @@ namespace WebStore.ViewComponents
             _productData = productData;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string brandId)
         {
+            int.TryParse(brandId, out var brandIdResult);
             var brands = GetBrands();
-            return View(brands);
+            return View(new BrandCompleteViewModel{Brands = brands, CurrentBrandId = brandIdResult});
         }
 
         private IEnumerable<BrandViewModel> GetBrands()

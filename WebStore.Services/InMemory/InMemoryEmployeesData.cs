@@ -47,9 +47,15 @@ namespace WebStore.Services.InMemory
             return employee;
         }
 
+        public void Commit()
+        {
+            //ничего не делаем
+        }
 
         public void AddNew(EmployeeView model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             model.Id = _employees.Max(e => e.Id) + 1;
             _employees.Add(model);
         }

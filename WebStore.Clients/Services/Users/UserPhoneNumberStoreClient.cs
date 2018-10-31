@@ -15,18 +15,21 @@ namespace WebStore.Clients.Services.Users
             var url = $"{ServiceAddress}/setPhoneNumber/{phoneNumber}";
             return PostAsync(url, user);
         }
+
         public async Task<string> GetPhoneNumberAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/getPhoneNumber";
             var result = await PostAsync(url, user);
             return await result.Content.ReadAsAsync<string>();
         }
+
         public async Task<bool> GetPhoneNumberConfirmedAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/getPhoneNumberConfirmed";
             var result = await PostAsync(url, user);
             return await result.Content.ReadAsAsync<bool>();
         }
+
         public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
         {
             user.PhoneNumberConfirmed = confirmed;

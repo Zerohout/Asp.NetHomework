@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
 using WebStore.DomainNew.ViewModel;
 using WebStore.Interfaces.Services;
@@ -15,7 +15,6 @@ namespace WebStore.Clients.Services.Employees
         }
 
         protected sealed override string ServiceAddress { get; set; }
-
         public IEnumerable<EmployeeView> GetAll()
         {
             var url = $"{ServiceAddress}";
@@ -48,6 +47,10 @@ namespace WebStore.Clients.Services.Employees
         {
             var url = $"{ServiceAddress}/{id}";
             Delete(url);
+        }
+
+        public void Commit()
+        {
         }
     }
 }

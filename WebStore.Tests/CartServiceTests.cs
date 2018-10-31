@@ -8,6 +8,7 @@ using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.DomainNew.ViewModel.Product;
 using WebStore.Interfaces.Services;
 using WebStore.Services;
+using WebStore.Services.Cart;
 using Assert = Xunit.Assert;
 
 namespace WebStore.Tests
@@ -225,7 +226,7 @@ namespace WebStore.Tests
                 }
             };
 
-            var products = new List<ProductDto>()
+            var products = new PagedProductDto();
             {
                 new ProductDto()
                 {
@@ -234,7 +235,7 @@ namespace WebStore.Tests
                     Name = "Test",
                     Order = 0,
                     Price = 1.11m,
-                }
+                };
             };
 
             var productData = new Mock<IProductData>();

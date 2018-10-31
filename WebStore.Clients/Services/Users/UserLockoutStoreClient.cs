@@ -17,47 +17,47 @@ namespace WebStore.Clients.Services.Users
             var result = await PostAsync(url, user);
             return await result.Content.ReadAsAsync<DateTimeOffset?>();
         }
+
         public Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
         {
             user.LockoutEnd = lockoutEnd;
             var url = $"{ServiceAddress}/setLockoutEndDate";
-            return PostAsync(url, new SetLockoutDto()
-            {
-                User = user,
-                LockoutEnd = lockoutEnd
-            });
+            return PostAsync(url, new SetLockoutDto() { User = user, LockoutEnd = lockoutEnd });
         }
+
         public async Task<int> IncrementAccessFailedCountAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/IncrementAccessFailedCount";
             var result = await PostAsync(url, user);
-
             return await result.Content.ReadAsAsync<int>();
         }
+
         public Task ResetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/ResetAccessFailedCount";
             return PostAsync(url, user);
         }
+
         public async Task<int> GetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/GetAccessFailedCount";
             var result = await PostAsync(url, user);
             return await result.Content.ReadAsAsync<int>();
         }
+
         public async Task<bool> GetLockoutEnabledAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/GetLockoutEnabled";
             var result = await PostAsync(url, user);
             return await result.Content.ReadAsAsync<bool>();
         }
+
         public async Task SetLockoutEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
         {
             user.LockoutEnabled = enabled;
             var url = $"{ServiceAddress}/SetLockoutEnabled/{enabled}";
             await PostAsync(url, user);
         }
-
         #endregion
     }
 }

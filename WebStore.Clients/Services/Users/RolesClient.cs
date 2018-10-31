@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
+using WebStore.DomainNew.Entities;
 
 namespace WebStore.Clients.Services.Users
 {
@@ -15,7 +19,6 @@ namespace WebStore.Clients.Services.Users
         }
 
         protected sealed override string ServiceAddress { get; set; }
-
         public void Dispose()
         {
             Client.Dispose();
@@ -76,8 +79,7 @@ namespace WebStore.Clients.Services.Users
             return ret;
         }
 
-        public Task SetNormalizedRoleNameAsync(IdentityRole role, string normalizedName,
-            CancellationToken cancellationToken)
+        public Task SetNormalizedRoleNameAsync(IdentityRole role, string normalizedName, CancellationToken cancellationToken)
         {
             role.NormalizedName = normalizedName;
             var url = $"{ServiceAddress}/SetNormalizedRoleName/{normalizedName}";

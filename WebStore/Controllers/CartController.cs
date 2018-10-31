@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebStore.DomainNew.Dto.Order;
 using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.DomainNew.ViewModel.Order;
@@ -30,13 +31,13 @@ namespace WebStore.Controllers
         public IActionResult DecrementFromCart(int id)
         {
             _cartService.DecrementFromCart(id);
-            return RedirectToAction("Details");
+            return Json(new { id, message = "Количество товара уменьшено на 1" });
         }
 
         public IActionResult RemoveFromCart(int id)
         {
             _cartService.RemoveFromCart(id);
-            return RedirectToAction("Details");
+            return Json(new { id, message = "Товар удален из корзины" });
         }
 
         public IActionResult RemoveAll()
@@ -45,13 +46,15 @@ namespace WebStore.Controllers
             return RedirectToAction("Details");
         }
 
-        public IActionResult AddToCart(int id, string returnUrl)
+        public IActionResult AddToCart(int id)
         {
             _cartService.AddToCart(id);
-            if (Url.IsLocalUrl(returnUrl))
-                return Redirect(returnUrl);
+            return Json(new { id, message = "Товар добавлен в корзину" });
+        }
 
-            return RedirectToAction("Index", "Home");
+        public IActionResult GetCartView()
+        {
+            return ViewComponent("Cart");
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -61,9 +64,18 @@ namespace WebStore.Controllers
             {
                 var orderModel = new CreateOrderModel()
                 {
-                    OrderItems = _cartService.TCart(),
-                    OrderViewModel = model
+                    OrderViewModel = model,
+                    OrderItems = new List<OrderItemDto>()
                 };
+                foreach (var orderItem in _cartService.TransformCart().Items)
+                {
+                    orderModel.OrderItems.Add(new OrderItemDto()
+                    {
+                        Id = orderItem.Key.Id,
+                        Price = orderItem.Key.Price,
+                        Quantity = orderItem.Value
+                    });
+                }
 
                 var orderResult = _ordersService.CreateOrder(orderModel, User.Identity.Name);
                 _cartService.RemoveAll();
@@ -83,5 +95,6 @@ namespace WebStore.Controllers
             ViewBag.OrderId = id;
             return View();
         }
+
     }
 }

@@ -19,13 +19,13 @@ namespace WebStore.ServicesHosting.Controllers
         }
 
         [HttpGet("sections")]
-        public IEnumerable<SectionDto> GetSections()
+        public IEnumerable<Section> GetSections()
         {
             return _productData.GetSections();
         }
 
         [HttpGet("sections/{id}")]
-        public SectionDto GetSectionById(int id)
+        public Section GetSectionById(int id)
         {
             return _productData.GetSectionById(id);
         }
@@ -44,7 +44,7 @@ namespace WebStore.ServicesHosting.Controllers
 
         [HttpPost]
         [ActionName("Post")]
-        public IEnumerable<ProductDto> GetProducts([FromBody]ProductFilter filter)
+        public PagedProductDto GetProducts([FromBody]ProductFilter filter)
         {
             return _productData.GetProducts(filter);
         }

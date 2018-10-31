@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WebStore.DomainNew.Dto.Order;
 using WebStore.DomainNew.Filters;
 using WebStore.DomainNew.ViewModel.Cart;
 using WebStore.DomainNew.ViewModel.Product;
 using WebStore.Interfaces.Services;
 
-namespace WebStore.Services
+namespace WebStore.Services.Cart
 {
     public class CartService : ICartService
     {
         private readonly IProductData _productData;
         private readonly ICartStore _cartStore;
-        
+
         public CartService(IProductData productData, ICartStore cartStore)
         {
             _productData = productData;
@@ -24,14 +23,11 @@ namespace WebStore.Services
             var cart = _cartStore.Cart;
             var item = cart.Items.FirstOrDefault(x => x.ProductId == id);
 
-            if (item != null)
-            {
-                if (item.Quantity > 0)
-                    item.Quantity--;
+            if (item?.Quantity > 0)
+                if (item != null) item.Quantity--;
 
-                if (item.Quantity == 0)
-                    cart.Items.Remove(item);
-            }
+            if (item?.Quantity == 0)
+                cart.Items.Remove(item);
 
             _cartStore.Cart = cart;
         }
@@ -70,7 +66,7 @@ namespace WebStore.Services
             var products = _productData.GetProducts(new ProductFilter()
             {
                 Ids = _cartStore.Cart.Items.Select(i => i.ProductId).ToList()
-            }).Select(p => new ProductViewModel()
+            }).Products.Select(p => new ProductViewModel()
             {
                 Id = p.Id,
                 ImageUrl = p.ImageUrl,
@@ -86,23 +82,6 @@ namespace WebStore.Services
             };
 
             return r;
-        }
-
-        public List<OrderItemDto> TCart()
-        {
-            var cart = _cartStore.Cart;
-
-            var orderItems = _productData.GetProducts(new ProductFilter()
-            {
-                Ids = cart.Items.Select(i => i.ProductId).ToList()
-            }).Select(p => new OrderItemDto()
-            {
-                Id = p.Id,
-                Price = p.Price,
-                Quantity = cart.Items.First(i => i.ProductId == p.Id).Quantity
-            }).ToList();
-
-            return orderItems;
         }
     }
 }

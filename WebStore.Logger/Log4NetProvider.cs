@@ -1,17 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.IO;
 using System.Xml;
+using Microsoft.Extensions.Logging;
 
 namespace WebStore.Logger
 {
     public class Log4NetProvider : ILoggerProvider
     {
         private readonly string _log4NetConfigFile;
-
         private readonly ConcurrentDictionary<string, Log4NetLogger> _loggers =
             new ConcurrentDictionary<string, Log4NetLogger>();
-
         public Log4NetProvider(string log4NetConfigFile)
         {
             _log4NetConfigFile = log4NetConfigFile;
@@ -38,6 +36,5 @@ namespace WebStore.Logger
             log4NetConfig.Load(File.OpenRead(filename));
             return log4NetConfig["log4net"];
         }
-
     }
 }

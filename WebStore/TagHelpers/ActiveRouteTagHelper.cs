@@ -42,7 +42,6 @@ namespace WebStore.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             base.Process(context, output);
-
             bool ignoreAction = context.AllAttributes.TryGetAttribute("ignore-action", out _);
 
             if (ShouldBeActive(ignoreAction))
@@ -68,11 +67,10 @@ namespace WebStore.TagHelpers
                 return false;
             }
 
-
             foreach (var routeValue in RouteValues)
             {
                 if (!ViewContext.RouteData.Values.ContainsKey(routeValue.Key) ||
-                ViewContext.RouteData.Values[routeValue.Key].ToString() != routeValue.Value)
+                    ViewContext.RouteData.Values[routeValue.Key].ToString() != routeValue.Value)
                 {
                     return false;
                 }
@@ -96,6 +94,5 @@ namespace WebStore.TagHelpers
                     : classAttr.Value + " active");
             }
         }
-
     }
 }

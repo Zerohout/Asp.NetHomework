@@ -15,6 +15,7 @@ namespace WebStore.Clients.Services.Users
             var url = $"{ServiceAddress}/setTwoFactor/{enabled}";
             return PostAsync(url, user);
         }
+
         public async Task<bool> GetTwoFactorEnabledAsync(User user, CancellationToken cancellationToken)
         {
             var url = $"{ServiceAddress}/getTwoFactorEnabled";
