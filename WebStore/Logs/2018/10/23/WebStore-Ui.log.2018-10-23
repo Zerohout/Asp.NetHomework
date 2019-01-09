@@ -1,0 +1,102 @@
+2018-10-23 13:26:30,408 [9] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:26:30,921 [9] ?     - An unhandled exception has occurred while executing the request
+
+2018-10-23 13:26:32,568 [10] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:26:32,592 [10] ?     - An unhandled exception has occurred while executing the request
+
+2018-10-23 13:30:33,232 [9] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:30:33,282 [9] ?     - An unhandled exception has occurred while executing the request
+
+2018-10-23 13:30:33,722 [9] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:30:33,725 [9] ?     - An unhandled exception has occurred while executing the request
+
+2018-10-23 13:31:59,341 [13] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:31:59,343 [13] ?     - An unhandled exception has occurred while executing the request
+
+2018-10-23 13:31:59,586 [4] ?     - Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+
+System.InvalidOperationException: Unable to resolve service for type 'WebStore.Interfaces.Api.IValuesService' while attempting to activate 'WebStore.Controllers.HomeController'.
+   at Microsoft.Extensions.Internal.ActivatorUtilities.GetService(IServiceProvider sp, Type type, Type requiredBy, Boolean isDefaultParameterRequired)
+   at lambda_method(Closure , IServiceProvider , Object[] )
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass5_0.<CreateControllerFactory>g__CreateController0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at WebStore.Services.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in F:\Gits\Asp.NetHomework\WebStore.Services\Middleware\ErrorHandlingMiddleware.cs:line 22
+2018-10-23 13:31:59,588 [4] ?     - An unhandled exception has occurred while executing the request
+
